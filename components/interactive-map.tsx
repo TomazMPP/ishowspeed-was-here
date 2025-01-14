@@ -103,6 +103,7 @@ export function InteractiveMap() {
     if (!year) return '#e5e7eb';
 
     const yearColors = {
+      1000: '#3b82f6',
       2022: '#FF6B6B', 
       2023: '#4ECDC4', 
       2024: '#FFD166', 
@@ -135,7 +136,7 @@ export function InteractiveMap() {
     }
 
     if (!countryData) return '#e5e7eb' 
-    if (alpha2Code === 'US') return '#2563eb' 
+    if (alpha2Code === 'US') return '#3b82f6' 
     if (countryData.visited) return '#15803d' 
     if (countryData.confirmedVisit) return '#ea580c' 
     return '#e5e7eb' 

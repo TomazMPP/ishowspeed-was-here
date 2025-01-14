@@ -7,7 +7,7 @@ export const countryData: Record<string, CountryData> = {
     visited: true,
     videoUrl: "https://youtube.com/watch?v=example1",
     views: 1500000,
-    visitDate: "2023-06-15"
+    visitDate: "1000-06-15"
   },
   BR: {
     id: "BR",
