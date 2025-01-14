@@ -47,6 +47,12 @@ export default function Home() {
       <div className="w-full h-full">
         <InteractiveMap />
       </div>
+
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10">
+        <p className="text-xl font-bold text-white text-center drop-shadow-lg">
+          Made by <a href="https://github.com/TomazMPP" className='text-green-500'>Tomaz</a>
+        </p>
+      </div>
     </main>
   );
 }
