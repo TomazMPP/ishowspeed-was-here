@@ -18,11 +18,11 @@ export function Legend({ isChronological = false }) {
             <span>2023</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-4 h-4 rounded-sm" style={{ backgroundColor: '#45B7D1' }} />
+            <div className="w-4 h-4 rounded-sm" style={{ backgroundColor: '#FFD166' }} />
             <span>2024</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-4 h-4 rounded-sm" style={{ backgroundColor: '#96CEB4' }} />
+            <div className="w-4 h-4 rounded-sm" style={{ backgroundColor: '#6A4C93' }} />
             <span>2025</span>
           </div>
           <div className="flex items-center gap-2">
