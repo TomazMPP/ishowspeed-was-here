@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion'
-import { ExternalLink, Calendar, PlayCircle } from 'lucide-react'
+import { ExternalLink, Calendar, PlayCircle, Home } from 'lucide-react'
 import type { TooltipData } from '../types/map-types'
 
 interface TooltipProps {
@@ -9,6 +9,7 @@ interface TooltipProps {
 export function Tooltip({ data }: TooltipProps) {
   if (!data) return null;
 
+  const isUS = data.country.id === 'US';
   const isVisited = data.country.visited;
   const isConfirmed = data.country.confirmedVisit;
 
@@ -28,11 +29,13 @@ export function Tooltip({ data }: TooltipProps) {
           {/* Status Badge */}
           <div className="absolute -top-3 right-5">
             <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
-              isVisited 
-                ? 'bg-green-100 text-green-800'
-                : 'bg-orange-100 text-orange-800'
+              isUS 
+                ? 'bg-blue-100 text-blue-800'
+                : isVisited 
+                  ? 'bg-green-100 text-green-800'
+                  : 'bg-orange-100 text-orange-800'
             }`}>
-              {isVisited ? 'Visited' : 'Confirmed Visit'}
+              {isUS ? 'Born' : isVisited ? 'Visited' : 'Confirmed Visit'}
             </span>
           </div>
 
@@ -40,54 +43,55 @@ export function Tooltip({ data }: TooltipProps) {
           <h3 className="font-bold text-2xl mb-4 text-gray-900">{data.country.name}</h3>
 
           <div className="space-y-4">
-            {/* Visit Date */}
-            <div className="flex items-center gap-3 text-gray-700">
-              <div className="flex items-center justify-center w-8 h-8 bg-gray-100 rounded-lg">
-                <Calendar className="w-5 h-5" />
-              </div>
-              <span className="text-sm font-medium">
-                {isVisited 
-                  ? `Visited on ${new Date(data.country.visitDate!).toLocaleDateString('en-US', {
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric'
-                    })}`
-                  : isConfirmed
-                    ? `Visit scheduled for ${new Date(data.country.visitDate!).toLocaleDateString('en-US', {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric'
-                      })}`
-                    : 'Not visited yet'
-                }
-              </span>
-            </div>
-
-            {/* Video Views - Only for visited countries */}
-            {isVisited && data.country.views && (
+            {isUS ? (
               <div className="flex items-center gap-3 text-gray-700">
                 <div className="flex items-center justify-center w-8 h-8 bg-gray-100 rounded-lg">
-                  <PlayCircle className="w-5 h-5" />
+                  <Home className="w-5 h-5" />
                 </div>
                 <span className="text-sm font-medium">
-                  {(data.country.views / 1000000).toFixed(1)}M views
+                  Born and raised in the US
                 </span>
               </div>
-            )}
-
-            {/* Video Link - Only for visited countries */}
-            {isVisited && data.country.videoUrl && (
-              <a 
-                href={data.country.videoUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-3 text-blue-600 hover:text-blue-700 transition-colors group mt-2"
-              >
-                <div className="flex items-center justify-center w-8 h-8 bg-blue-100 rounded-lg group-hover:bg-blue-200 transition-colors">
-                  <ExternalLink className="w-5 h-5" />
+            ) : (
+              <>
+                {/* Visit Date */}
+                <div className="flex items-center gap-3 text-gray-700">
+                  <div className="flex items-center justify-center w-8 h-8 bg-gray-100 rounded-lg">
+                    <Calendar className="w-5 h-5" />
+                  </div>
+                  <span className="text-sm font-medium">
+                    {isVisited 
+                      ? `Visited on ${new Date(data.country.visitDate! + 'T12:00:00').toLocaleDateString('en-US', {
+                          year: 'numeric',
+                          month: 'long',
+                          day: 'numeric'
+                        })}`
+                      : isConfirmed
+                        ? `Visit scheduled for ${new Date(data.country.visitDate! + 'T12:00:00').toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                          })}`
+                        : 'Not visited yet'
+                    }
+                  </span>
                 </div>
-                <span className="text-sm font-medium">Watch video</span>
-              </a>
+
+                {/* Video Link - Only for visited countries */}
+                {isVisited && data.country.videoUrl && (
+                  <a 
+                    href={data.country.videoUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-3 text-blue-600 hover:text-blue-700 transition-colors group mt-2"
+                  >
+                    <div className="flex items-center justify-center w-8 h-8 bg-blue-100 rounded-lg group-hover:bg-blue-200 transition-colors">
+                      <ExternalLink className="w-5 h-5" />
+                    </div>
+                    <span className="text-sm font-medium">Watch video</span>
+                  </a>
+                )}
+              </>
             )}
           </div>
         </motion.div>

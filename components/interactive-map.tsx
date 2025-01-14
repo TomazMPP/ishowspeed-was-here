@@ -4,7 +4,10 @@ import { countryData } from '../data/countries'
 import { Tooltip } from './tooltip'
 import { Legend } from './legend'
 import { StatsOverlay } from './stats-overlay'
+
+import { format, parse } from 'date-fns'
 import type { CountryData, TooltipData } from '../types/map-types'
+import { ViewModeToggle } from './view-toggle'
 
 const geoUrl = "https://unpkg.com/world-atlas@2/countries-110m.json"
 
@@ -63,6 +66,7 @@ const countryNameMap: { [key: string]: string } = {
 export function InteractiveMap() {
   const [tooltipData, setTooltipData] = useState<TooltipData | null>(null);
   const [position, setPosition] = useState({ coordinates: [0, 0], zoom: 1 });
+  const [isChronological, setIsChronological] = useState(false);
 
   const visitedCount = Object.values(countryData).filter(country => country.visited).length;
 
@@ -70,63 +74,84 @@ export function InteractiveMap() {
     setPosition(position);
   };
 
-  const getCountryColor = (countryData: CountryData | undefined) => {
+  const getYearFromDate = (dateString: string | undefined) => {
+    if (!dateString) return null;
+    return parseInt(dateString.split('-')[0]);
+  };
+
+  const getChronologicalColor = (country: CountryData | undefined) => {
+    if (!country?.visitDate) return '#e5e7eb'; 
+    
+    const year = getYearFromDate(country.visitDate);
+    if (!year) return '#e5e7eb';
+
+    const yearColors = {
+      2022: '#FF6B6B', 
+      2023: '#4ECDC4', 
+      2024: '#FFD166', 
+      2025: '#6A4C93'  
+    };
+    
+    
+
+    return yearColors[year as keyof typeof yearColors] || '#e5e7eb';
+  };
+
+  const getCountryColor = (countryData: CountryData | undefined, alpha2Code: string) => {
+    if (isChronological && countryData?.visited) {
+      return getChronologicalColor(countryData);
+    }
+
     if (!countryData) return '#e5e7eb' 
+    if (alpha2Code === 'US') return '#3b82f6' 
     if (countryData.visited) return '#16a34a' 
     if (countryData.confirmedVisit) return '#f97316' 
-    return '#e5e7eb' 
+    return '#e5e7eb'
   }
 
-  const getHoverColor = (countryData: CountryData | undefined) => {
+  const getHoverColor = (countryData: CountryData | undefined, alpha2Code: string) => {
+    if (isChronological && countryData?.visited) {
+      const baseColor = getChronologicalColor(countryData);
+      return baseColor.replace(/(\d+)%\)$/, (match, lightness) => 
+        `${Math.max(0, parseInt(lightness) - 10)}%)`
+      );
+    }
+
     if (!countryData) return '#e5e7eb' 
+    if (alpha2Code === 'US') return '#2563eb' 
     if (countryData.visited) return '#15803d' 
     if (countryData.confirmedVisit) return '#ea580c' 
     return '#e5e7eb' 
   }
 
-  const getPressedColor = (countryData: CountryData | undefined) => {
+  const getPressedColor = (countryData: CountryData | undefined, alpha2Code: string) => {
+    if (isChronological && countryData?.visited) {
+      const baseColor = getChronologicalColor(countryData);
+      return baseColor.replace(/(\d+)%\)$/, (match, lightness) => 
+        `${Math.max(0, parseInt(lightness) - 15)}%)`
+      );
+    }
+
     if (!countryData) return '#e5e7eb' 
+    if (alpha2Code === 'US') return '#1d4ed8' 
     if (countryData.visited) return '#166534' 
     if (countryData.confirmedVisit) return '#c2410c' 
     return '#e5e7eb' 
   }
 
-  const handleMouseEnter = (event: React.MouseEvent<SVGPathElement>, geo: any) => {
-    const countryName = geo.properties?.name;
-    const alpha2Code = countryNameMap[countryName];
-    const country = countryData[alpha2Code];
-    
-    if (country?.visited || country?.confirmedVisit) {
-      setTooltipData({
-        country,
-        position: {
-          x: event.clientX,
-          y: event.clientY
-        }
-      });
-    } else {
-      setTooltipData(null);
-    }
-  };
-
-  const handleMouseMove = (event: React.MouseEvent<SVGPathElement>, geo: any) => {
-    if (tooltipData) {
-      setTooltipData({
-        ...tooltipData,
-        position: {
-          x: event.clientX,
-          y: event.clientY
-        }
-      });
-    }
-  };
-
-  const handleMouseLeave = () => {
-    setTooltipData(null);
-  };
 
   return (
-    <div className="relative w-full h-full" role="region" aria-label="Interactive World Map">
+    <div 
+      className="relative w-full h-full" 
+      role="region" 
+      aria-label="Interactive World Map"
+      onMouseLeave={() => setTooltipData(null)}
+    >
+      <ViewModeToggle 
+        isChronological={isChronological} 
+        onToggle={() => setIsChronological(!isChronological)} 
+      />
+      
       <ComposableMap
         projection="geoMercator"
         className="w-full h-full bg-[#1a365d] transition-all duration-300"
@@ -149,9 +174,31 @@ export function InteractiveMap() {
                   <Geography
                     key={geo.rsmKey}
                     geography={geo}
-                    onMouseEnter={(e) => handleMouseEnter(e, geo)}
-                    onMouseMove={(e) => handleMouseMove(e, geo)}
-                    onMouseLeave={handleMouseLeave}
+                    onMouseEnter={(e) => {
+                      if (isInteractive) {
+                        setTooltipData({
+                          country,
+                          position: {
+                            x: e.clientX,
+                            y: e.clientY
+                          }
+                        });
+                      } else {
+                        setTooltipData(null);
+                      }
+                    }}
+                    onMouseMove={(e) => {
+                      if (tooltipData && isInteractive) {
+                        setTooltipData({
+                          country,
+                          position: {
+                            x: e.clientX,
+                            y: e.clientY
+                          }
+                        });
+                      }
+                    }}
+                    onMouseLeave={() => setTooltipData(null)}
                     onClick={() => {
                       console.log('Country:', {
                         name: countryName,
@@ -160,17 +207,25 @@ export function InteractiveMap() {
                       });
                     }}
                     tabIndex={isInteractive ? 0 : -1}
-                    aria-label={`${countryName} ${country?.visited ? '- Visited' : country?.confirmedVisit ? '- Visit Confirmed' : ''}`}
+                    aria-label={`${countryName} ${
+                      isChronological && country?.visitDate
+                        ? `- Visited in ${getYearFromDate(country.visitDate)}`
+                        : country?.visited 
+                          ? '- Visited' 
+                          : country?.confirmedVisit 
+                            ? '- Visit Confirmed' 
+                            : ''
+                    }`}
                     style={{
                       default: {
-                        fill: getCountryColor(country),
+                        fill: getCountryColor(country, alpha2Code),
                         outline: 'none',
                         transition: 'all 0.3s',
                         strokeWidth: 0.5,
                         stroke: '#fff'
                       },
                       hover: {
-                        fill: getHoverColor(country),
+                        fill: getHoverColor(country, alpha2Code),
                         outline: 'none',
                         cursor: isInteractive ? 'pointer' : 'default',
                         transition: 'all 0.3s',
@@ -178,7 +233,7 @@ export function InteractiveMap() {
                         stroke: '#fff'
                       },
                       pressed: {
-                        fill: getPressedColor(country),
+                        fill: getPressedColor(country, alpha2Code),
                         outline: 'none',
                         strokeWidth: 0.5,
                         stroke: '#fff'
@@ -192,7 +247,7 @@ export function InteractiveMap() {
         </ZoomableGroup>
       </ComposableMap>
       <Tooltip data={tooltipData} />
-      <Legend />
+      <Legend isChronological={isChronological} />
       <StatsOverlay visitedCount={visitedCount} />
     </div>
   );
