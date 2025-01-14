@@ -9,8 +9,12 @@ export function Legend() {
       </div>
       <div className="space-y-2 text-sm">
         <div className="flex items-center gap-2">
-          <div className="w-4 h-4 bg-red-600 rounded-sm" />
+          <div className="w-4 h-4 bg-green-600 rounded-sm" />
           <span>Visited Countries</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <div className="w-4 h-4 bg-orange-500 rounded-sm" />
+          <span>Confirmed Future Visits</span>
         </div>
         <div className="flex items-center gap-2">
           <div className="w-4 h-4 bg-gray-200 rounded-sm" />
@@ -20,4 +24,3 @@ export function Legend() {
     </div>
   )
 }
-
