@@ -5,8 +5,6 @@ import { countryData } from '../data/countries'
 import { Tooltip } from './tooltip'
 import { Legend } from './legend'
 import { StatsOverlay } from './stats-overlay'
-
-import { format, parse } from 'date-fns'
 import type { CountryData, TooltipData } from '../types/map-types'
 import { ViewModeToggle } from './view-toggle'
 

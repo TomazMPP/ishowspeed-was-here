@@ -6,7 +6,7 @@ import { Loading } from '@/components/loading'
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [error] = useState<string | null>(null);
 
   useEffect(() => {
     const timer = setTimeout(() => {

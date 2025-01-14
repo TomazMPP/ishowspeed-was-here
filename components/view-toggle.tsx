@@ -1,5 +1,4 @@
 import React from 'react';
-import { format, parse } from 'date-fns';
 import { Clock, Map } from 'lucide-react';
 
 interface ViewModeToggleProps {
