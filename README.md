@@ -1,6 +1,6 @@
 # Interactive Travel Map
 
-An interactive world map visualization built with React that displays IShowSpeed's travel history, upcoming visits, and related content for each country. The map features a dynamic visualization system with both standard and chronological viewing modes.
+An interactive world map visualization built with Next.js, TypeScript, React, Tailwind that displays IShowSpeed's travel history, upcoming visits, and related content for each country. The map features a dynamic visualization system with both standard and chronological viewing modes.
 
 ## Features
 
