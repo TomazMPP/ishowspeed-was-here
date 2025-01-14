@@ -43,7 +43,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "IShowSpeed World Travel Map | Countries Visited Tracker",
     description: "Explore IShowSpeed's global adventures with this interactive map. Watch country-specific vlogs, track visit dates, and discover upcoming destinations.",
-    url: "https://ishowspeed-travel-tracker.vercel.app/",
+    url: "https://ishowspeedtracker.com/",
     siteName: "IShowSpeed Travel Map",
     images: [
       {
@@ -83,7 +83,7 @@ export const metadata: Metadata = {
     google: "your-google-site-verification",
   },
   alternates: {
-    canonical: "https://ishowspeed-travel-tracker.vercel.app/",
+    canonical: "https://ishowspeedtracker.com/",
   },
   icons: {
     icon: "/favicon.ico",
