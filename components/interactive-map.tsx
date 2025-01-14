@@ -1,4 +1,5 @@
-import { useState } from 'react'
+"use client"
+import { useEffect, useRef, useState } from 'react'
 import { ComposableMap, Geographies, Geography, ZoomableGroup } from 'react-simple-maps'
 import { countryData } from '../data/countries'
 import { Tooltip } from './tooltip'
@@ -65,10 +66,23 @@ const countryNameMap: { [key: string]: string } = {
 
 export function InteractiveMap() {
   const [tooltipData, setTooltipData] = useState<TooltipData | null>(null);
+  const [selectedTooltipData, setSelectedTooltipData] = useState<TooltipData | null>(null);
   const [position, setPosition] = useState({ coordinates: [0, 0], zoom: 1 });
   const [isChronological, setIsChronological] = useState(false);
+  const mapRef = useRef<HTMLDivElement>(null);
 
   const visitedCount = Object.values(countryData).filter(country => country.visited).length;
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (mapRef.current && !mapRef.current.contains(event.target as Node)) {
+        setSelectedTooltipData(null);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const handleMoveEnd = (position: any) => {
     setPosition(position);
@@ -142,6 +156,7 @@ export function InteractiveMap() {
 
   return (
     <div 
+      ref={mapRef}
       className="relative w-full h-full" 
       role="region" 
       aria-label="Interactive World Map"
@@ -175,7 +190,7 @@ export function InteractiveMap() {
                     key={geo.rsmKey}
                     geography={geo}
                     onMouseEnter={(e) => {
-                      if (isInteractive) {
+                      if (isInteractive && !selectedTooltipData) {
                         setTooltipData({
                           country,
                           position: {
@@ -183,12 +198,10 @@ export function InteractiveMap() {
                             y: e.clientY
                           }
                         });
-                      } else {
-                        setTooltipData(null);
                       }
                     }}
                     onMouseMove={(e) => {
-                      if (tooltipData && isInteractive) {
+                      if (tooltipData && isInteractive && !selectedTooltipData) {
                         setTooltipData({
                           country,
                           position: {
@@ -198,24 +211,25 @@ export function InteractiveMap() {
                         });
                       }
                     }}
-                    onMouseLeave={() => setTooltipData(null)}
-                    onClick={() => {
-                      console.log('Country:', {
-                        name: countryName,
-                        alpha2: alpha2Code,
-                        data: country
-                      });
+                    onMouseLeave={() => {
+                      if (!selectedTooltipData) {
+                        setTooltipData(null);
+                      }
+                    }}
+                    onClick={(e) => {
+                      if (isInteractive) {
+                        setSelectedTooltipData({
+                          country,
+                          position: {
+                            x: e.clientX,
+                            y: e.clientY
+                          }
+                        });
+                        setTooltipData(null);
+                      }
                     }}
                     tabIndex={isInteractive ? 0 : -1}
-                    aria-label={`${countryName} ${
-                      isChronological && country?.visitDate
-                        ? `- Visited in ${getYearFromDate(country.visitDate)}`
-                        : country?.visited 
-                          ? '- Visited' 
-                          : country?.confirmedVisit 
-                            ? '- Visit Confirmed' 
-                            : ''
-                    }`}
+                    aria-label={countryName}
                     style={{
                       default: {
                         fill: getCountryColor(country, alpha2Code),
@@ -246,7 +260,11 @@ export function InteractiveMap() {
           </Geographies>
         </ZoomableGroup>
       </ComposableMap>
-      <Tooltip data={tooltipData} />
+      <Tooltip 
+        hoverData={tooltipData} 
+        selectedData={selectedTooltipData}
+        onClose={() => setSelectedTooltipData(null)}
+      />
       <Legend isChronological={isChronological} />
       <StatsOverlay visitedCount={visitedCount} />
     </div>
