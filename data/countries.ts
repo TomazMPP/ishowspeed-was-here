@@ -311,7 +311,7 @@ export const countryData: Record<string, CountryData> = {
     visited: true,
     videoUrl: "https://www.youtube.com/watch?v=C8Gqmu4p49s",
     views: 1950000,
-    visitDate: "2025-11-20"
+    visitDate: "2024-11-20"
   },
   NZ: {
     id: "NZ",
