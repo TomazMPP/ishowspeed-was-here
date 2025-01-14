@@ -8,7 +8,13 @@ import { StatsOverlay } from './stats-overlay'
 import type { CountryData, TooltipData } from '../types/map-types'
 import { ViewModeToggle } from './view-toggle'
 
+
 const geoUrl = "https://unpkg.com/world-atlas@2/countries-110m.json"
+
+interface Position {
+  coordinates: [number, number];
+  zoom: number;
+}
 
 const countryNameMap: { [key: string]: string } = {
   "United States of America": "US",
@@ -82,10 +88,9 @@ export function InteractiveMap() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const handleMoveEnd = (position: any) => {
+  const handleMoveEnd = (position: Position) => {
     setPosition(position);
   };
-
   const getYearFromDate = (dateString: string | undefined) => {
     if (!dateString) return null;
     return parseInt(dateString.split('-')[0]);
