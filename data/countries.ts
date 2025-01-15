@@ -241,14 +241,6 @@ export const countryData: Record<string, CountryData> = {
     views: 1350000,
     visitDate: "2024-07-16"
   },
-  IE: {
-    id: "IE",
-    name: "Ireland",
-    visited: true,
-    videoUrl: "https://www.youtube.com/watch?v=vf_EczgiP1s",
-    views: 1400000,
-    visitDate: "2024-07-19"
-  },
   TH: {
     id: "TH",
     name: "Thailand",

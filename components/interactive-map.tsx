@@ -54,7 +54,6 @@ const countryNameMap: { [key: string]: string } = {
   "United Kingdom": "GB",
   "Hungary": "HU",
   "Austria": "AT",
-  "Ireland": "IE",
   "Thailand": "TH",
   "Philippines": "PH",
   "Vietnam": "VN",
