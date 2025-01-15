@@ -76,6 +76,10 @@ export function InteractiveMap() {
   const mapRef = useRef<HTMLDivElement>(null);
 
   const visitedCount = Object.values(countryData).filter(country => country.visited).length;
+  const visited2022Count = Object.values(countryData).filter(country => country.visitDate?.includes('2022')).length;
+  const visited2023Count = Object.values(countryData).filter(country => country.visitDate?.includes('2023')).length;
+  const visited2024Count = Object.values(countryData).filter(country => country.visitDate?.includes('2024')).length;
+  const visited2025Count = Object.values(countryData).filter(country => country.visitDate?.includes('2025')).length;
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -270,7 +274,14 @@ export function InteractiveMap() {
         onClose={() => setSelectedTooltipData(null)}
       />
       <Legend isChronological={isChronological} />
-      <StatsOverlay visitedCount={visitedCount} />
+      <StatsOverlay 
+        visitedCount={visitedCount}
+        visited2022Count={visited2022Count}
+        visited2023Count={visited2023Count}
+        visited2024Count={visited2024Count}
+        visited2025Count={visited2025Count}
+      />
+      
     </div>
   );
 }
