@@ -346,9 +346,10 @@ export const countryData: Record<string, CountryData> = {
   EC: {
     id: "EC",
     name: "Ecuador",
-    visited: false,
-    confirmedVisit: true,
-    visitDate: "2025-01-02"
+    visited: true,
+    videoUrl: "https://www.youtube.com/watch?v=3bV4x2uLtB0",
+    views: 1850000,
+    visitDate: "2025-01-16"
   },
   UY: {
     id: "UY",
