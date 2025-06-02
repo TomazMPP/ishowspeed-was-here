@@ -99,6 +99,19 @@ export function InteractiveMap() {
 
   const multipleVisitsCount = Object.values(countryData).filter(country => hasMultipleVisits(country)).length;
 
+  // Calculate specific visit count statistics
+  const singleVisitCount = Object.values(countryData).filter(country => {
+    return country.visited && getVisitCount(country) === 1;
+  }).length;
+  
+  const twoVisitsCount = Object.values(countryData).filter(country => {
+    return country.visited && getVisitCount(country) === 2;
+  }).length;
+  
+  const threeOrMoreVisitsCount = Object.values(countryData).filter(country => {
+    return country.visited && getVisitCount(country) >= 3;
+  }).length;
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (mapRef.current && !mapRef.current.contains(event.target as Node)) {
@@ -321,6 +334,9 @@ export function InteractiveMap() {
         visited2024Count={visited2024Count}
         visited2025Count={visited2025Count}
         multipleVisitsCount={multipleVisitsCount}
+        singleVisitCount={singleVisitCount}
+        twoVisitsCount={twoVisitsCount}
+        threeOrMoreVisitsCount={threeOrMoreVisitsCount}
         viewMode={viewMode}
       />
       

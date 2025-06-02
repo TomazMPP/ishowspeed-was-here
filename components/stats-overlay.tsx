@@ -8,6 +8,9 @@ interface StatsOverlayProps {
   visited2024Count: number;
   visited2025Count: number;
   multipleVisitsCount: number;
+  singleVisitCount: number;
+  twoVisitsCount: number;
+  threeOrMoreVisitsCount: number;
   viewMode: ViewMode;
 }
 
@@ -18,6 +21,9 @@ export function StatsOverlay({
   visited2024Count,
   visited2025Count,
   multipleVisitsCount,
+  singleVisitCount,
+  twoVisitsCount,
+  threeOrMoreVisitsCount,
   viewMode
 }: StatsOverlayProps) {
   const yearData = [
@@ -59,7 +65,7 @@ export function StatsOverlay({
                     <span className="text-sm text-gray-700">Single Visit</span>
                   </div>
                   <div className="text-sm font-semibold text-gray-900">
-                    {visitedCount - multipleVisitsCount}
+                    {singleVisitCount}
                   </div>
                 </div>
                 <div className="flex items-center justify-between">
@@ -68,8 +74,7 @@ export function StatsOverlay({
                     <span className="text-sm text-gray-700">2 Visits</span>
                   </div>
                   <div className="text-sm font-semibold text-gray-900">
-                    {/* Calculate 2-visit countries specifically */}
-                    {Math.min(multipleVisitsCount, visitedCount - multipleVisitsCount)}
+                    {twoVisitsCount}
                   </div>
                 </div>
                 <div className="flex items-center justify-between">
@@ -78,7 +83,7 @@ export function StatsOverlay({
                     <span className="text-sm text-gray-700">3+ Visits</span>
                   </div>
                   <div className="text-sm font-semibold text-gray-900">
-                    {Math.max(0, multipleVisitsCount - (visitedCount - multipleVisitsCount))}
+                    {threeOrMoreVisitsCount}
                   </div>
                 </div>
               </div>
