@@ -6,7 +6,6 @@ export const countryData: Record<string, CountryData> = {
     name: "United States",
     visited: true,
     videoUrl: "https://youtube.com/watch?v=example1",
-    views: 1500000,
     visitDate: "1000-06-15"
   },  
   BR: {
@@ -15,11 +14,11 @@ export const countryData: Record<string, CountryData> = {
     visited: true,
     videoUrl: [
       "https://www.youtube.com/watch?v=bil2kEOg-D8",
-      "https://www.youtube.com/watch?v=brazil-visit-2"
+      "https://www.youtube.com/watch?v=1FturZiQpXE",
+      "https://www.youtube.com/watch?v=mn0mcy763iI"
     ],
-    views: [2000000, 1800000],
-    visitDate: ["2024-01-08", "2024-11-15"],
-    visitCount: 2
+    visitDate: ["2024-01-08", "2024-02-12", "2025-01-27"],
+    visitCount: 3
   },
   IN: {
     id: "IN",
@@ -236,7 +235,7 @@ export const countryData: Record<string, CountryData> = {
     visited: true,
     videoUrl: [
       "https://www.youtube.com/watch?v=QdZQKm6_V9Y",
-      "https://www.youtube.com/watch?v=uk-visit-2"
+      "https://www.youtube.com/watch?v=wL08QXd_ato"
     ],
     views: [1850000, 2050000],
     visitDate: ["2022-09-20", "2024-04-15"],
@@ -356,9 +355,9 @@ export const countryData: Record<string, CountryData> = {
   PE: {
     id: "PE",
     name: "Peru",
-    visited: false,
-    confirmedVisit: true,
-    visitDate: "2025-01-02"
+    visited: true,
+    videoUrl: "https://www.youtube.com/watch?v=qvhH0EgKUiI",
+    visitDate: "2025-01-28"
   },
   EC: {
     id: "EC",
@@ -371,16 +370,16 @@ export const countryData: Record<string, CountryData> = {
   UY: {
     id: "UY",
     name: "Uruguay",
-    visited: false,
-    confirmedVisit: true,
-    visitDate: "2025-01-02"
+    visited: true,
+    videoUrl: "https://www.youtube.com/watch?v=m3fzVMVEj8U",
+    visitDate: "2025-01-25"
   },
   PY: {
     id: "PY",
     name: "Paraguay",
-    visited: false,
-    confirmedVisit: true,
-    visitDate: "2025-01-02"
+    visited: true,
+    videoUrl: "https://www.youtube.com/watch?v=mn0mcy763iI",
+    visitDate: "2025-01-27"
   },
   PA: {
     id: "PA",
@@ -396,4 +395,33 @@ export const countryData: Record<string, CountryData> = {
     videoUrl: "https://www.youtube.com/watch?v=_C7EuXcsveg",
     visitDate: "2025-01-21"
   },
+  BO: {
+    id: "BO",
+    name: "Bolivia",
+    visited: true,
+    videoUrl: "https://www.youtube.com/watch?v=Mi1w07kgo5g",
+    visitDate: "2025-01-29"
+  },
+  CN: {
+    id: "CN",
+    name: "China",
+    visited: true,
+    videoUrl: "https://www.youtube.com/watch?v=fK85SQzm0Z0",
+    visitDate: "2025-03-24"
+  },
+  HK: {
+    id: "HK",
+    name: "Hong Kong",
+    visited: true,
+    videoUrl: "https://www.youtube.com/watch?v=oNS8PHxWdp8",
+    visitDate: "2025-04-03"
+  },
+  MN: {
+    id: "MN",
+    name: "Mongolia",
+    visited: true,
+    videoUrl: "https://www.youtube.com/watch?v=0mwuGExoxFU",
+    visitDate: "2025-04-11"
+  },
+  
 };

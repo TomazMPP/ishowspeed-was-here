@@ -68,7 +68,8 @@ const countryNameMap: { [key: string]: string } = {
   "Colombia": "CO",
   "Guatemala": "GT",
   "Bolivia": "BO",
-  "China": "CN"
+  "China": "CN",
+  "Mongolia": "MN"
 };
 
 export function InteractiveMap() {
