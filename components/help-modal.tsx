@@ -91,9 +91,7 @@ export function HelpModal({ isOpen, onClose }: HelpModalProps) {
               <div className="bg-blue-50 border-l-4 border-blue-400 p-4 rounded">
                 <p className="font-semibold text-blue-800 mb-2">Disputed Territories</p>
                 <p className="text-blue-700">
-                  Some regions visited by Speed involve territorial disputes. For example, he visited Northern Ireland, 
-                  but Ireland is not marked as "visited" since Northern Ireland is internationally recognized as part of the UK. 
-                  The map follows internationally recognized borders and nomenclature.
+                Some regions Speed visited are subject to territorial disputes. For instance, he visited Northern Ireland, but Ireland is not marked as "visited" because Northern Ireland is internationally recognized as part of the UK. The map adheres strictly to internationally recognized borders and naming conventions. Additionally, the map’s data is based on GEOJSON, so such distinctions are beyond my control.
                 </p>
               </div>
             </div>

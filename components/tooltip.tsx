@@ -19,7 +19,7 @@ export function Tooltip({ hoverData, selectedData, onClose }: TooltipProps) {
     if (!data) return;
 
     const padding = 20;
-    const tooltipWidth = hasMultipleVisits(data.country) ? 360 : 300;
+    const tooltipWidth = data.country.id === 'CN' ? 400 : hasMultipleVisits(data.country) ? 360 : 300;
     const tooltipHeight = hasMultipleVisits(data.country) ? 400 : 200;
     
     let x = data.position.x + 16;
@@ -70,7 +70,7 @@ export function Tooltip({ hoverData, selectedData, onClose }: TooltipProps) {
           style={{
             left: tooltipPosition.x,
             top: tooltipPosition.y,
-            width: multipleVisits ? '360px' : '300px',
+            width: data.country.id === 'CN' ? '400px' : multipleVisits ? '360px' : '300px',
             maxHeight: '70vh',
             overflowY: 'auto'
           }}
@@ -103,7 +103,9 @@ export function Tooltip({ hoverData, selectedData, onClose }: TooltipProps) {
               </div>
             </div>
 
-            <h3 className="font-bold text-xl text-gray-900 leading-tight">{data.country.name}</h3>
+            <h3 className="font-bold text-xl text-gray-900 leading-tight">
+              {data.country.id === 'CN' ? 'China/Hong Kong' : data.country.name}
+            </h3>
           </div>
 
           {/* Content */}
@@ -134,13 +136,20 @@ export function Tooltip({ hoverData, selectedData, onClose }: TooltipProps) {
                           <div className="flex items-center justify-center w-6 h-6 bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-full text-xs font-bold">
                             {index + 1}
                           </div>
-                          <span className="text-sm font-medium text-gray-700">
-                            {new Date(visit.date + 'T12:00:00').toLocaleDateString('en-US', {
-                              month: 'short',
-                              day: 'numeric',
-                              year: 'numeric'
-                            })}
-                          </span>
+                          <div className="flex flex-col">
+                            <span className="text-sm font-medium text-gray-700">
+                              {new Date(visit.date + 'T12:00:00').toLocaleDateString('en-US', {
+                                month: 'short',
+                                day: 'numeric',
+                                year: 'numeric'
+                              })}
+                            </span>
+                            {data.country.customLabels && data.country.customLabels[index] && (
+                              <span className="text-xs text-purple-600 font-medium">
+                                {data.country.customLabels[index]}
+                              </span>
+                            )}
+                          </div>
                         </div>
                       </div>
                       {visit.videoUrl && (
@@ -149,48 +158,146 @@ export function Tooltip({ hoverData, selectedData, onClose }: TooltipProps) {
                           className="w-full flex items-center gap-2 text-blue-600 hover:text-blue-700 transition-colors group bg-blue-50 hover:bg-blue-100 p-2 rounded-lg"
                         >
                           <PlayCircle className="w-4 h-4" />
-                          <span className="text-xs font-medium flex-grow text-left">Watch Visit #{index + 1}</span>
+                          <span className="text-xs font-medium flex-grow text-left">
+                            {data.country.customLabels && data.country.customLabels[index] 
+                              ? `Watch ${data.country.customLabels[index]} Visit`
+                              : `Watch Visit #${index + 1}`
+                            }
+                          </span>
                           <ExternalLink className="w-3 h-3 opacity-60 group-hover:opacity-100 transition-opacity" />
                         </button>
                       )}
                     </div>
                   ))}
                 </div>
+                
+                {/* Special note for China/Hong Kong */}
+                {data.country.id === 'CN' && data.country.customLabels?.includes('Hong Kong') && (
+                  <div className="mt-3 p-3 bg-amber-50 border border-amber-200 rounded-lg">
+                    <div className="flex items-start gap-2">
+                      <div className="w-1 h-1 bg-amber-500 rounded-full mt-2 flex-shrink-0"></div>
+                      <p className="text-xs text-amber-700 leading-relaxed">
+                        <strong>Geographic Note:</strong> Hong Kong appears as part of China on this map due to the World Atlas data structure, but both mainland China and Hong Kong visits are tracked separately in the timeline above.
+                      </p>
+                    </div>
+                  </div>
+                )}
               </div>
             ) : (
               <div className="space-y-3">
-                <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl">
-                  <div className="flex items-center justify-center w-10 h-10 bg-gray-100 rounded-lg">
-                    <Calendar className="w-5 h-5 text-gray-600" />
-                  </div>
-                  <div>
-                    <div className="font-medium text-gray-900 text-sm">
-                      {isVisited ? 'Visit Date' : 'Scheduled Visit'}
+                {/* Only show standard sections for non-China countries */}
+                {data.country.id !== 'CN' && (
+                  <>
+                    <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl">
+                      <div className="flex items-center justify-center w-10 h-10 bg-gray-100 rounded-lg">
+                        <Calendar className="w-5 h-5 text-gray-600" />
+                      </div>
+                      <div>
+                        <div className="font-medium text-gray-900 text-sm">
+                          {isVisited ? 'Visit Date' : 'Scheduled Visit'}
+                        </div>
+                        <div className="text-gray-600 text-xs">
+                          {new Date(getVisitDates(data.country)[0] + 'T12:00:00').toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                          })}
+                        </div>
+                      </div>
                     </div>
-                    <div className="text-gray-600 text-xs">
-                      {new Date(getVisitDates(data.country)[0] + 'T12:00:00').toLocaleDateString('en-US', {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric'
-                      })}
-                    </div>
-                  </div>
-                </div>
 
-                {getVideoUrls(data.country).length > 0 && (
-                  <button 
-                    onClick={(e) => handleVideoClick(e, getVideoUrls(data.country)[0])}
-                    className="w-full flex items-center gap-3 text-blue-600 hover:text-blue-700 transition-colors group bg-blue-50 hover:bg-blue-100 p-3 rounded-xl"
-                  >
-                    <div className="flex items-center justify-center w-10 h-10 bg-blue-100 rounded-lg group-hover:bg-blue-200 transition-colors">
-                      <PlayCircle className="w-5 h-5" />
+                    {getVideoUrls(data.country).length > 0 && (
+                      <button 
+                        onClick={(e) => handleVideoClick(e, getVideoUrls(data.country)[0])}
+                        className="w-full flex items-center gap-3 text-blue-600 hover:text-blue-700 transition-colors group bg-blue-50 hover:bg-blue-100 p-3 rounded-xl"
+                      >
+                        <div className="flex items-center justify-center w-10 h-10 bg-blue-100 rounded-lg group-hover:bg-blue-200 transition-colors">
+                          <PlayCircle className="w-5 h-5" />
+                        </div>
+                        <div className="flex-grow text-left">
+                          <div className="text-sm font-medium">Watch Video</div>
+                          <div className="text-xs opacity-70">View the livestream</div>
+                        </div>
+                        <ExternalLink className="w-4 h-4 opacity-50 group-hover:opacity-100 transition-opacity" />
+                      </button>
+                    )}
+                  </>
+                )}
+
+                {/* Special China + Hong Kong Section */}
+                {data.country.id === 'CN' && (
+                  <div className="mt-4 space-y-3">
+                    {/* China and Hong Kong Cards - Horizontal Layout */}
+                    <div className="grid grid-cols-2 gap-3">
+                      {/* Mainland China Card */}
+                      <div className="p-3 bg-green-50 border border-green-200 rounded-lg">
+                        <div className="flex items-center gap-2 mb-2">
+                          <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                          <h4 className="font-semibold text-green-900 text-xs">🇨🇳 Mainland</h4>
+                        </div>
+                        
+                        <div className="space-y-2">
+                          <div className="flex items-center gap-1 text-xs text-green-700">
+                            <Calendar className="w-3 h-3" />
+                            <span className="text-xs">
+                              {new Date(data.country.visitDate + 'T12:00:00').toLocaleDateString('en-US', {
+                                month: 'short',
+                                day: 'numeric',
+                                year: 'numeric'
+                              })}
+                            </span>
+                          </div>
+                          
+                          <button 
+                            onClick={(e) => handleVideoClick(e, getVideoUrls(data.country)[0])}
+                            className="w-full flex items-center gap-1 text-blue-600 hover:text-blue-700 transition-colors group bg-white hover:bg-blue-50 p-2 rounded-md border border-green-200"
+                          >
+                            <PlayCircle className="w-3 h-3" />
+                            <span className="text-xs font-medium flex-grow text-left">Watch</span>
+                            <ExternalLink className="w-2 h-2 opacity-60 group-hover:opacity-100 transition-opacity" />
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Hong Kong Card */}
+                      <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
+                        <div className="flex items-center gap-2 mb-2">
+                          <div className="w-2 h-2 bg-red-500 rounded-full"></div>
+                          <h4 className="font-semibold text-red-900 text-xs">🇭🇰 Hong Kong</h4>
+                        </div>
+                        
+                        <div className="space-y-2">
+                          <div className="flex items-center gap-1 text-xs text-red-700">
+                            <Calendar className="w-3 h-3" />
+                            <span className="text-xs">Apr 3, 2025</span>
+                          </div>
+                          
+                          <button 
+                            onClick={(e) => handleVideoClick(e, "https://www.youtube.com/watch?v=oNS8PHxWdp8")}
+                            className="w-full flex items-center gap-1 text-blue-600 hover:text-blue-700 transition-colors group bg-white hover:bg-blue-50 p-2 rounded-md border border-red-200"
+                          >
+                            <PlayCircle className="w-3 h-3" />
+                            <span className="text-xs font-medium flex-grow text-left">Watch</span>
+                            <ExternalLink className="w-2 h-2 opacity-60 group-hover:opacity-100 transition-opacity" />
+                          </button>
+                        </div>
+                      </div>
                     </div>
-                    <div className="flex-grow text-left">
-                      <div className="text-sm font-medium">Watch Video</div>
-                      <div className="text-xs opacity-70">View the travel content</div>
+
+                    {/* Improved Geographic Note */}
+                    <div className="p-3 bg-amber-50 border border-amber-200 rounded-lg">
+                      <div className="flex items-start gap-2">
+                        <div className="w-1 h-1 bg-amber-500 rounded-full mt-2 flex-shrink-0"></div>
+                        <div className="text-xs text-amber-700 leading-relaxed">
+                          <p className="font-medium mb-1">⚠️ Technical Limitation</p>
+                          <p>
+                            Hong Kong appears combined with China on this map due to the World Atlas GeoJSON data structure. 
+                            <strong> I have no control over this geographical representation.</strong> Both regions are tracked separately with their own visit dates and videos above.
+                          </p>
+                        </div>
+                      </div>
                     </div>
-                    <ExternalLink className="w-4 h-4 opacity-50 group-hover:opacity-100 transition-opacity" />
-                  </button>
+                  </div>
                 )}
               </div>
             )}

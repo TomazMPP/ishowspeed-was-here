@@ -5,6 +5,7 @@ import { countryData } from '../data/countries'
 import { Tooltip } from './tooltip'
 import { Legend } from './legend'
 import { StatsOverlay } from './stats-overlay'
+import { HelpButton } from './help-button'
 import type { CountryData, TooltipData, ViewMode } from '../types/map-types'
 import { ViewModeToggle } from './view-toggle'
 import { getLatestVisitDate, getFirstVisitDate, getVisitCount, hasMultipleVisits } from '@/lib/country-utils'
@@ -65,7 +66,9 @@ const countryNameMap: { [key: string]: string } = {
   "Australia": "AU",
   "New Zealand": "NZ",
   "Colombia": "CO",
-  "Guatemala": "GT"
+  "Guatemala": "GT",
+  "Bolivia": "BO",
+  "China": "CN"
 };
 
 export function InteractiveMap() {
@@ -229,7 +232,6 @@ export function InteractiveMap() {
                 const alpha2Code = countryNameMap[countryName];
                 const country = countryData[alpha2Code];
                 const isInteractive = country?.visited || country?.confirmedVisit;
-
                 return (
                   <Geography
                     key={geo.rsmKey}
@@ -321,6 +323,7 @@ export function InteractiveMap() {
         viewMode={viewMode}
       />
       
+      <HelpButton />
     </div>
   );
 }

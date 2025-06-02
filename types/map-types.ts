@@ -7,6 +7,7 @@ export interface CountryData {
   visitDate?: string | string[];
   views?: number | number[];
   visitCount?: number;
+  customLabels?: string[];
 }
 
 export interface TooltipData {
