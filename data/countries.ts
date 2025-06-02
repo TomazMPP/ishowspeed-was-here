@@ -50,11 +50,10 @@ export const countryData: Record<string, CountryData> = {
     visited: true,
     videoUrl: [
       "https://www.youtube.com/watch?v=gtATq8Zs7po",
-      "https://www.youtube.com/watch?v=germany-visit-2"
     ],
     views: [1700000, 1900000],
     visitDate: ["2024-06-16", "2024-08-20"],
-    visitCount: 2
+    visitCount: 1
   },
   FR: {
     id: "FR",
@@ -102,12 +101,10 @@ export const countryData: Record<string, CountryData> = {
     visited: true,
     videoUrl: [
       "https://www.youtube.com/watch?v=sZIPaQUc4uc",
-      "https://www.youtube.com/watch?v=japan-visit-2",
-      "https://www.youtube.com/watch?v=japan-visit-3"
     ],
     views: [2100000, 2300000, 1950000],
     visitDate: ["2023-07-14", "2024-03-22", "2024-10-05"],
-    visitCount: 3
+    visitCount: 1
   },
   RO: {
     id: "RO",
