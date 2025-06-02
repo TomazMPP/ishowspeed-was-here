@@ -13,9 +13,13 @@ export const countryData: Record<string, CountryData> = {
     id: "BR",
     name: "Brazil",
     visited: true,
-    videoUrl: "https://www.youtube.com/watch?v=bil2kEOg-D8",
-    views: 2000000,
-    visitDate: "2024-01-08"
+    videoUrl: [
+      "https://www.youtube.com/watch?v=bil2kEOg-D8",
+      "https://www.youtube.com/watch?v=brazil-visit-2"
+    ],
+    views: [2000000, 1800000],
+    visitDate: ["2024-01-08", "2024-11-15"],
+    visitCount: 2
   },
   IN: {
     id: "IN",
@@ -45,9 +49,13 @@ export const countryData: Record<string, CountryData> = {
     id: "DE",
     name: "Germany",
     visited: true,
-    videoUrl: "https://www.youtube.com/watch?v=gtATq8Zs7po",
-    views: 1700000,
-    visitDate: "2024-06-16"
+    videoUrl: [
+      "https://www.youtube.com/watch?v=gtATq8Zs7po",
+      "https://www.youtube.com/watch?v=germany-visit-2"
+    ],
+    views: [1700000, 1900000],
+    visitDate: ["2024-06-16", "2024-08-20"],
+    visitCount: 2
   },
   FR: {
     id: "FR",
@@ -93,9 +101,14 @@ export const countryData: Record<string, CountryData> = {
     id: "JP",
     name: "Japan",
     visited: true,
-    videoUrl: "https://www.youtube.com/watch?v=sZIPaQUc4uc",
-    views: 2100000,
-    visitDate: "2023-07-14"
+    videoUrl: [
+      "https://www.youtube.com/watch?v=sZIPaQUc4uc",
+      "https://www.youtube.com/watch?v=japan-visit-2",
+      "https://www.youtube.com/watch?v=japan-visit-3"
+    ],
+    views: [2100000, 2300000, 1950000],
+    visitDate: ["2023-07-14", "2024-03-22", "2024-10-05"],
+    visitCount: 3
   },
   RO: {
     id: "RO",
@@ -221,9 +234,13 @@ export const countryData: Record<string, CountryData> = {
     id: "GB",
     name: "United Kingdom",
     visited: true,
-    videoUrl: "https://www.youtube.com/watch?v=QdZQKm6_V9Y",
-    views: 1850000,
-    visitDate: "2022-09-20"
+    videoUrl: [
+      "https://www.youtube.com/watch?v=QdZQKm6_V9Y",
+      "https://www.youtube.com/watch?v=uk-visit-2"
+    ],
+    views: [1850000, 2050000],
+    visitDate: ["2022-09-20", "2024-04-15"],
+    visitCount: 2
   },
   HU: {
     id: "HU",

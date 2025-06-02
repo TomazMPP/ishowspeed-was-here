@@ -5,8 +5,9 @@ import { countryData } from '../data/countries'
 import { Tooltip } from './tooltip'
 import { Legend } from './legend'
 import { StatsOverlay } from './stats-overlay'
-import type { CountryData, TooltipData } from '../types/map-types'
+import type { CountryData, TooltipData, ViewMode } from '../types/map-types'
 import { ViewModeToggle } from './view-toggle'
+import { getLatestVisitDate, getFirstVisitDate, getVisitCount, hasMultipleVisits } from '@/lib/country-utils'
 
 
 const geoUrl = "https://unpkg.com/world-atlas@2/countries-110m.json"
@@ -71,14 +72,28 @@ export function InteractiveMap() {
   const [tooltipData, setTooltipData] = useState<TooltipData | null>(null);
   const [selectedTooltipData, setSelectedTooltipData] = useState<TooltipData | null>(null);
   const [position, setPosition] = useState({ coordinates: [0, 0], zoom: 1 });
-  const [isChronological, setIsChronological] = useState(false);
+  const [viewMode, setViewMode] = useState<ViewMode>('standard');
   const mapRef = useRef<HTMLDivElement>(null);
 
   const visitedCount = Object.values(countryData).filter(country => country.visited).length;
-  const visited2022Count = Object.values(countryData).filter(country => country.visitDate?.includes('2022')).length;
-  const visited2023Count = Object.values(countryData).filter(country => country.visitDate?.includes('2023')).length;
-  const visited2024Count = Object.values(countryData).filter(country => country.visitDate?.includes('2024')).length;
-  const visited2025Count = Object.values(countryData).filter(country => country.visitDate?.includes('2025')).length;
+  const visited2022Count = Object.values(countryData).filter(country => {
+    const date = getLatestVisitDate(country) || getFirstVisitDate(country);
+    return date?.includes('2022');
+  }).length;
+  const visited2023Count = Object.values(countryData).filter(country => {
+    const date = getLatestVisitDate(country) || getFirstVisitDate(country);
+    return date?.includes('2023');
+  }).length;
+  const visited2024Count = Object.values(countryData).filter(country => {
+    const date = getLatestVisitDate(country) || getFirstVisitDate(country);
+    return date?.includes('2024');
+  }).length;
+  const visited2025Count = Object.values(countryData).filter(country => {
+    const date = getLatestVisitDate(country) || getFirstVisitDate(country);
+    return date?.includes('2025');
+  }).length;
+
+  const multipleVisitsCount = Object.values(countryData).filter(country => hasMultipleVisits(country)).length;
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -94,15 +109,19 @@ export function InteractiveMap() {
   const handleMoveEnd = (position: Position) => {
     setPosition(position);
   };
+  
   const getYearFromDate = (dateString: string | undefined) => {
     if (!dateString) return null;
     return parseInt(dateString.split('-')[0]);
   };
 
   const getChronologicalColor = (country: CountryData | undefined) => {
-    if (!country?.visitDate) return '#e5e7eb'; 
+    if (!country?.visited) return '#e5e7eb'; 
     
-    const year = getYearFromDate(country.visitDate);
+    const date = getLatestVisitDate(country) || getFirstVisitDate(country);
+    if (!date) return '#e5e7eb';
+    
+    const year = getYearFromDate(date);
     if (!year) return '#e5e7eb';
 
     const yearColors = {
@@ -113,16 +132,33 @@ export function InteractiveMap() {
       2025: '#6A4C93'  
     };
     
-    
-
     return yearColors[year as keyof typeof yearColors] || '#e5e7eb';
   };
 
+  const getMultipleVisitsColor = (country: CountryData | undefined, alpha2Code: string) => {
+    if (!country) return '#e5e7eb'; 
+    if (alpha2Code === 'US') return '#3b82f6'; 
+    if (!country.visited) {
+      if (country.confirmedVisit) return '#f97316'; 
+      return '#e5e7eb'; 
+    }
+    
+    const visitCount = getVisitCount(country);
+    if (visitCount >= 3) return '#ef4444'; // Red for 3+ visits
+    if (visitCount === 2) return '#eab308'; // Yellow for 2 visits
+    return '#16a34a'; // Green for 1 visit
+  };
+
   const getCountryColor = (countryData: CountryData | undefined, alpha2Code: string) => {
-    if (isChronological && countryData?.visited) {
+    if (viewMode === 'chronological' && countryData?.visited) {
       return getChronologicalColor(countryData);
     }
 
+    if (viewMode === 'multiple-visits') {
+      return getMultipleVisitsColor(countryData, alpha2Code);
+    }
+
+    // Standard view
     if (!countryData) return '#e5e7eb' 
     if (alpha2Code === 'US') return '#3b82f6' 
     if (countryData.visited) return '#16a34a' 
@@ -131,33 +167,35 @@ export function InteractiveMap() {
   }
 
   const getHoverColor = (countryData: CountryData | undefined, alpha2Code: string) => {
-    if (isChronological && countryData?.visited) {
-      const baseColor = getChronologicalColor(countryData);
-      return baseColor.replace(/(\d+)%\)$/, (match, lightness) => 
-        `${Math.max(0, parseInt(lightness) - 10)}%)`
-      );
-    }
-
-    if (!countryData) return '#e5e7eb' 
-    if (alpha2Code === 'US') return '#3b82f6' 
-    if (countryData.visited) return '#15803d' 
-    if (countryData.confirmedVisit) return '#ea580c' 
-    return '#e5e7eb' 
+    const baseColor = getCountryColor(countryData, alpha2Code);
+    // Darken the base color for hover effect
+    if (baseColor === '#e5e7eb') return '#d1d5db';
+    if (baseColor === '#3b82f6') return '#2563eb';
+    if (baseColor === '#16a34a') return '#15803d';
+    if (baseColor === '#f97316') return '#ea580c';
+    if (baseColor === '#eab308') return '#ca8a04';
+    if (baseColor === '#ef4444') return '#dc2626';
+    if (baseColor === '#FF6B6B') return '#ff5252';
+    if (baseColor === '#4ECDC4') return '#26a69a';
+    if (baseColor === '#FFD166') return '#ffc107';
+    if (baseColor === '#6A4C93') return '#5e3a82';
+    return baseColor;
   }
 
   const getPressedColor = (countryData: CountryData | undefined, alpha2Code: string) => {
-    if (isChronological && countryData?.visited) {
-      const baseColor = getChronologicalColor(countryData);
-      return baseColor.replace(/(\d+)%\)$/, (match, lightness) => 
-        `${Math.max(0, parseInt(lightness) - 15)}%)`
-      );
-    }
-
-    if (!countryData) return '#e5e7eb' 
-    if (alpha2Code === 'US') return '#1d4ed8' 
-    if (countryData.visited) return '#166534' 
-    if (countryData.confirmedVisit) return '#c2410c' 
-    return '#e5e7eb' 
+    const hoverColor = getHoverColor(countryData, alpha2Code);
+    // Further darken for pressed state
+    if (hoverColor === '#d1d5db') return '#9ca3af';
+    if (hoverColor === '#2563eb') return '#1d4ed8';
+    if (hoverColor === '#15803d') return '#166534';
+    if (hoverColor === '#ea580c') return '#c2410c';
+    if (hoverColor === '#ca8a04') return '#a16207';
+    if (hoverColor === '#dc2626') return '#b91c1c';
+    if (hoverColor === '#ff5252') return '#f44336';
+    if (hoverColor === '#26a69a') return '#00796b';
+    if (hoverColor === '#ffc107') return '#ff9800';
+    if (hoverColor === '#5e3a82') return '#4a2c6a';
+    return hoverColor;
   }
 
 
@@ -170,8 +208,8 @@ export function InteractiveMap() {
       onMouseLeave={() => setTooltipData(null)}
     >
       <ViewModeToggle 
-        isChronological={isChronological} 
-        onToggle={() => setIsChronological(!isChronological)} 
+        viewMode={viewMode} 
+        onToggle={setViewMode} 
       />
       
       <ComposableMap
@@ -272,13 +310,15 @@ export function InteractiveMap() {
         selectedData={selectedTooltipData}
         onClose={() => setSelectedTooltipData(null)}
       />
-      <Legend isChronological={isChronological} />
-      <StatsOverlay 
+      <Legend viewMode={viewMode} />
+      <StatsOverlay
         visitedCount={visitedCount}
         visited2022Count={visited2022Count}
         visited2023Count={visited2023Count}
         visited2024Count={visited2024Count}
         visited2025Count={visited2025Count}
+        multipleVisitsCount={multipleVisitsCount}
+        viewMode={viewMode}
       />
       
     </div>

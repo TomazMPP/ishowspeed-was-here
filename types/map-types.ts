@@ -3,9 +3,10 @@ export interface CountryData {
   name: string;
   visited: boolean;
   confirmedVisit?: boolean; 
-  videoUrl?: string;
-  visitDate?: string;
-  views?: number;
+  videoUrl?: string | string[];
+  visitDate?: string | string[];
+  views?: number | number[];
+  visitCount?: number;
 }
 
 export interface TooltipData {
@@ -15,3 +16,5 @@ export interface TooltipData {
     y: number;
   };
 }
+
+export type ViewMode = 'standard' | 'chronological' | 'multiple-visits';
