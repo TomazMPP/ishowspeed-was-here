@@ -46,7 +46,6 @@ export function Tooltip({ hoverData, selectedData, onClose }: TooltipProps) {
 
   const isUS = data.country.id === 'US';
   const isVisited = data.country.visited;
-  const isConfirmed = data.country.confirmedVisit;
   const isSelected = !!selectedData;
   const visitCount = getVisitCount(data.country);
   const multipleVisits = hasMultipleVisits(data.country);

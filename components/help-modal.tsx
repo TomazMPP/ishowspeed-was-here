@@ -1,6 +1,5 @@
 "use client"
-import { useState } from 'react'
-import { X, Info, Map, Eye, Calendar, Users, ExternalLink, AlertTriangle } from 'lucide-react'
+import { X, Info, Map, Eye, Calendar, Users, AlertTriangle } from 'lucide-react'
 
 interface HelpModalProps {
   isOpen: boolean
@@ -91,7 +90,7 @@ export function HelpModal({ isOpen, onClose }: HelpModalProps) {
               <div className="bg-blue-50 border-l-4 border-blue-400 p-4 rounded">
                 <p className="font-semibold text-blue-800 mb-2">Disputed Territories</p>
                 <p className="text-blue-700">
-                Some regions Speed visited are subject to territorial disputes. For instance, he visited Northern Ireland, but Ireland is not marked as "visited" because Northern Ireland is internationally recognized as part of the UK. The map adheres strictly to internationally recognized borders and naming conventions. Additionally, the map’s data is based on GEOJSON, so such distinctions are beyond my control.
+                Some regions Speed visited are subject to territorial disputes. For instance, he visited Northern Ireland, but Ireland is not marked as &ldquo;visited&rdquo; because Northern Ireland is internationally recognized as part of the UK. The map adheres strictly to internationally recognized borders and naming conventions. Additionally, the map&apos;s data is based on GEOJSON, so such distinctions are beyond my control.
                 </p>
               </div>
             </div>
@@ -101,9 +100,9 @@ export function HelpModal({ isOpen, onClose }: HelpModalProps) {
           <section className="border-t border-gray-200 pt-6">
             <h3 className="text-lg font-semibold text-gray-900 mb-3">About the Project</h3>
             <p className="text-gray-700">
-              This interactive map tracks IShowSpeed's global travels, showing his destinations, visit dates, 
+              This interactive map tracks IShowSpeed&apos;s global travels, showing his destinations, visit dates, 
               and links to corresponding videos. The project is a tribute to fans who want to follow his worldwide journey 
-              and discover the places he's explored on stream.
+              and discover the places he&apos;s explored on stream.
             </p>
           </section>
         </div>
@@ -114,7 +113,7 @@ export function HelpModal({ isOpen, onClose }: HelpModalProps) {
             onClick={onClose}
             className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-lg font-medium transition-colors"
           >
-            Got it, let's explore!
+            Got it, let&apos;s explore!
           </button>
         </div>
       </div>
