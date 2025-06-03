@@ -11,7 +11,7 @@ import { ViewModeToggle } from './view-toggle'
 import { getFirstVisitDate, getVisitCount, hasMultipleVisits } from '@/lib/country-utils'
 
 
-const geoUrl = "https://unpkg.com/world-atlas@2/countries-110m.json"
+const geoUrl = "https://unpkg.com/world-atlas@2.0.2/countries-110m.json"
 
 interface Position {
   coordinates: [number, number];
@@ -98,6 +98,9 @@ const countryNameMap: { [key: string]: string } = {
   "Russia": "RU",
   "Russian Federation": "RU",
   "Serbia": "RS",
+  "Kosovo": "RS",
+  "Republic of Kosovo": "RS",
+  "Kosovo and Metohija": "RS",
   "Slovakia": "SK",
   "Slovenia": "SI",
   "Ukraine": "UA",
@@ -251,7 +254,7 @@ export function InteractiveMap() {
     return false;
   }
 
-  const getStrokeStyle = () => {
+  const getStrokeStyle = (countryName?: string, alpha2Code?: string) => {
     // Default stroke for all countries
     return {
       strokeWidth: 0.5,
@@ -354,8 +357,11 @@ export function InteractiveMap() {
                     geography={geo}
                     onMouseEnter={(e) => {
                       if (isInteractive && !selectedTooltipData) {
+                        // Show "Serbia" when hovering Kosovo
+                        const displayCountry = countryName === 'Kosovo' ? 
+                          { ...country, name: 'Serbia' } : country;
                         setTooltipData({
-                          country,
+                          country: displayCountry,
                           position: {
                             x: e.clientX,
                             y: e.clientY
@@ -365,8 +371,11 @@ export function InteractiveMap() {
                     }}
                     onMouseMove={(e) => {
                       if (tooltipData && isInteractive && !selectedTooltipData) {
+                        // Show "Serbia" when hovering Kosovo
+                        const displayCountry = countryName === 'Kosovo' ? 
+                          { ...country, name: 'Serbia' } : country;
                         setTooltipData({
-                          country,
+                          country: displayCountry,
                           position: {
                             x: e.clientX,
                             y: e.clientY
@@ -381,8 +390,11 @@ export function InteractiveMap() {
                     }}
                     onClick={(e) => {
                       if (isInteractive) {
+                        // Show "Serbia" when clicking Kosovo
+                        const displayCountry = countryName === 'Kosovo' ? 
+                          { ...country, name: 'Serbia' } : country;
                         setSelectedTooltipData({
-                          country,
+                          country: displayCountry,
                           position: {
                             x: e.clientX,
                             y: e.clientY
@@ -392,28 +404,28 @@ export function InteractiveMap() {
                       }
                     }}
                     tabIndex={isInteractive ? 0 : -1}
-                    aria-label={countryName}
+                    aria-label={countryName === 'Kosovo' ? 'Serbia' : countryName}
                     style={{
                       default: {
                         fill: getCountryColor(country, alpha2Code),
                         outline: 'none',
                         transition: 'all 0.3s',
-                        strokeWidth: getStrokeStyle().strokeWidth,
-                        stroke: getStrokeStyle().stroke
+                        strokeWidth: getStrokeStyle(countryName, alpha2Code).strokeWidth,
+                        stroke: getStrokeStyle(countryName, alpha2Code).stroke
                       },
                       hover: {
                         fill: getHoverColor(country, alpha2Code),
                         outline: 'none',
                         cursor: isInteractive ? 'pointer' : 'default',
                         transition: 'all 0.3s',
-                        strokeWidth: getStrokeStyle().strokeWidth,
-                        stroke: getStrokeStyle().stroke
+                        strokeWidth: getStrokeStyle(countryName, alpha2Code).strokeWidth,
+                        stroke: getStrokeStyle(countryName, alpha2Code).stroke
                       },
                       pressed: {
                         fill: getPressedColor(country, alpha2Code),
                         outline: 'none',
-                        strokeWidth: getStrokeStyle().strokeWidth,
-                        stroke: getStrokeStyle().stroke
+                        strokeWidth: getStrokeStyle(countryName, alpha2Code).strokeWidth,
+                        stroke: getStrokeStyle(countryName, alpha2Code).stroke
                       },
                     }}
                   />
