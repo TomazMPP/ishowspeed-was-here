@@ -57,6 +57,37 @@ export function HelpModal({ isOpen, onClose }: HelpModalProps) {
             </div>
           </section>
 
+          {/* Micro-States Section */}
+          <section>
+            <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+              <Map className="w-5 h-5 text-orange-600" />
+              Micro-States & Special Territories
+            </h3>
+            <div className="space-y-3 text-gray-700">
+              <div className="bg-orange-50 border-l-4 border-orange-400 p-4 rounded">
+                <p className="font-semibold text-orange-800 mb-2">Orange Diagonal Stripes</p>
+                <p className="text-orange-700">
+                  Some visited countries (like <strong>Spain</strong> and <strong>Italy</strong>) show diagonal orange stripes. 
+                  This indicates that while the main country has been visited, there are <strong>planned visits to micro-states</strong> 
+                  within or near those territories.
+                </p>
+              </div>
+              <div className="space-y-2 text-sm">
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 bg-green-500 rounded-full flex-shrink-0"></div>
+                  <span><strong>🇪🇸 Spain:</strong> Visited + 🇦🇩 Andorra (planned)</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 bg-green-500 rounded-full flex-shrink-0"></div>
+                  <span><strong>🇮🇹 Italy:</strong> Visited + 🇻🇦 Vatican & 🇸🇲 San Marino (planned)</span>
+                </div>
+              </div>
+              <p className="text-xs text-gray-600 mt-2">
+                <em>These micro-states appear within the larger countries on the map due to their small geographical size.</em>
+              </p>
+            </div>
+          </section>
+
           {/* Interaction Section */}
           <section>
             <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">

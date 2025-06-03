@@ -205,13 +205,47 @@ export function InteractiveMap() {
     // Standard view
     if (!countryData) return '#e5e7eb' 
     if (alpha2Code === 'US') return '#3b82f6' 
+    
+    // If visited and has planned micro-states, use pattern
+    if (countryData.visited && hasPlannedMicroStates(alpha2Code)) {
+      return 'url(#plannedMicroStates)';
+    }
+    
     if (countryData.visited) return '#16a34a' 
     if (countryData.confirmedVisit) return '#f97316' 
     return '#e5e7eb'
   }
 
+  // New function to check if a country has planned micro-states
+  const hasPlannedMicroStates = (alpha2Code: string) => {
+    if (alpha2Code === 'IT') {
+      // Check if Vatican or San Marino are planned
+      return (countryData['VA']?.confirmedVisit && !countryData['VA']?.visited) ||
+             (countryData['SM']?.confirmedVisit && !countryData['SM']?.visited);
+    }
+    if (alpha2Code === 'ES') {
+      // Check if Andorra is planned
+      return countryData['AD']?.confirmedVisit && !countryData['AD']?.visited;
+    }
+    return false;
+  }
+
+  const getStrokeStyle = (countryData: CountryData | undefined, alpha2Code: string) => {
+    // Default stroke for all countries
+    return {
+      strokeWidth: 0.5,
+      stroke: '#fff'
+    };
+  }
+
   const getHoverColor = (countryData: CountryData | undefined, alpha2Code: string) => {
     const baseColor = getCountryColor(countryData, alpha2Code);
+    
+    // If it's using the pattern, return a slightly darker version of the pattern
+    if (baseColor === 'url(#plannedMicroStates)') {
+      return 'url(#plannedMicroStates)';
+    }
+    
     // Darken the base color for hover effect
     if (baseColor === '#e5e7eb') return '#d1d5db';
     if (baseColor === '#3b82f6') return '#2563eb';
@@ -228,6 +262,12 @@ export function InteractiveMap() {
 
   const getPressedColor = (countryData: CountryData | undefined, alpha2Code: string) => {
     const hoverColor = getHoverColor(countryData, alpha2Code);
+    
+    // If it's using the pattern, keep the same pattern
+    if (hoverColor === 'url(#plannedMicroStates)') {
+      return 'url(#plannedMicroStates)';
+    }
+    
     // Further darken for pressed state
     if (hoverColor === '#d1d5db') return '#9ca3af';
     if (hoverColor === '#2563eb') return '#1d4ed8';
@@ -260,6 +300,20 @@ export function InteractiveMap() {
         projection="geoMercator"
         className="w-full h-full bg-[#1a365d] transition-all duration-300"
       >
+        <defs>
+          {/* SVG Pattern for planned micro-states */}
+          <pattern
+            id="plannedMicroStates"
+            patternUnits="userSpaceOnUse"
+            width="8"
+            height="8"
+            patternTransform="rotate(45)"
+          >
+            <rect width="8" height="8" fill="#16a34a" />
+            <rect width="2" height="8" fill="#f97316" />
+          </pattern>
+        </defs>
+        
         <ZoomableGroup
           zoom={position.zoom}
           center={position.coordinates as [number, number]}
@@ -323,22 +377,22 @@ export function InteractiveMap() {
                         fill: getCountryColor(country, alpha2Code),
                         outline: 'none',
                         transition: 'all 0.3s',
-                        strokeWidth: 0.5,
-                        stroke: '#fff'
+                        strokeWidth: getStrokeStyle(country, alpha2Code).strokeWidth,
+                        stroke: getStrokeStyle(country, alpha2Code).stroke
                       },
                       hover: {
                         fill: getHoverColor(country, alpha2Code),
                         outline: 'none',
                         cursor: isInteractive ? 'pointer' : 'default',
                         transition: 'all 0.3s',
-                        strokeWidth: 0.5,
-                        stroke: '#fff'
+                        strokeWidth: getStrokeStyle(country, alpha2Code).strokeWidth,
+                        stroke: getStrokeStyle(country, alpha2Code).stroke
                       },
                       pressed: {
                         fill: getPressedColor(country, alpha2Code),
                         outline: 'none',
-                        strokeWidth: 0.5,
-                        stroke: '#fff'
+                        strokeWidth: getStrokeStyle(country, alpha2Code).strokeWidth,
+                        stroke: getStrokeStyle(country, alpha2Code).stroke
                       },
                     }}
                   />
