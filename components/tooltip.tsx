@@ -19,7 +19,7 @@ export function Tooltip({ hoverData, selectedData, onClose }: TooltipProps) {
     if (!data) return;
 
     const padding = 20;
-    const tooltipWidth = data.country.id === 'CN' ? 400 : hasMultipleVisits(data.country) ? 360 : 300;
+    const tooltipWidth = data.country.id === 'CN' ? 400 : data.country.id === 'IT' ? 400 : data.country.id === 'ES' ? 400 : hasMultipleVisits(data.country) ? 360 : 300;
     const tooltipHeight = hasMultipleVisits(data.country) ? 400 : 200;
     
     let x = data.position.x + 16;
@@ -69,7 +69,7 @@ export function Tooltip({ hoverData, selectedData, onClose }: TooltipProps) {
           style={{
             left: tooltipPosition.x,
             top: tooltipPosition.y,
-            width: data.country.id === 'CN' ? '400px' : multipleVisits ? '360px' : '300px',
+            width: data.country.id === 'CN' ? '400px' : data.country.id === 'IT' ? '400px' : data.country.id === 'ES' ? '400px' : multipleVisits ? '360px' : '300px',
             maxHeight: '70vh',
             overflowY: 'auto'
           }}
@@ -103,7 +103,10 @@ export function Tooltip({ hoverData, selectedData, onClose }: TooltipProps) {
             </div>
 
             <h3 className="font-bold text-xl text-gray-900 leading-tight">
-              {data.country.id === 'CN' ? 'China/Hong Kong' : data.country.name}
+              {data.country.id === 'CN' ? 'China/Hong Kong' : 
+               data.country.id === 'IT' ? 'Italy/Vatican/San Marino' : 
+               data.country.id === 'ES' ? 'Spain/Andorra' :
+               data.country.name}
             </h3>
           </div>
 
@@ -184,8 +187,8 @@ export function Tooltip({ hoverData, selectedData, onClose }: TooltipProps) {
               </div>
             ) : (
               <div className="space-y-3">
-                {/* Only show standard sections for non-China countries */}
-                {data.country.id !== 'CN' && (
+                {/* Only show standard sections for non-special countries */}
+                {data.country.id !== 'CN' && data.country.id !== 'IT' && data.country.id !== 'ES' && (
                   <>
                     <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl">
                       <div className="flex items-center justify-center w-10 h-10 bg-gray-100 rounded-lg">
@@ -292,6 +295,173 @@ export function Tooltip({ hoverData, selectedData, onClose }: TooltipProps) {
                           <p>
                             Hong Kong appears combined with China on this map due to the World Atlas GeoJSON data structure. 
                             <strong> I have no control over this geographical representation.</strong> Both regions are tracked separately with their own visit dates and videos above.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Special Italy + Vatican + San Marino Section */}
+                {data.country.id === 'IT' && (
+                  <div className="mt-4 space-y-3">
+                    {/* Italy, Vatican, and San Marino Cards - Grid Layout */}
+                    <div className="grid grid-cols-2 gap-3">
+                      {/* Italy Card */}
+                      <div className="p-3 bg-green-50 border border-green-200 rounded-lg">
+                        <div className="flex items-center gap-2 mb-2">
+                          <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                          <h4 className="font-semibold text-green-900 text-xs">🇮🇹 Italy</h4>
+                        </div>
+                        
+                        <div className="space-y-2">
+                          <div className="flex items-center gap-1 text-xs text-green-700">
+                            <Calendar className="w-3 h-3" />
+                            <span className="text-xs">
+                              {new Date(data.country.visitDate + 'T12:00:00').toLocaleDateString('en-US', {
+                                month: 'short',
+                                day: 'numeric',
+                                year: 'numeric'
+                              })}
+                            </span>
+                          </div>
+                          
+                          <button 
+                            onClick={(e) => handleVideoClick(e, getVideoUrls(data.country)[0])}
+                            className="w-full flex items-center gap-1 text-blue-600 hover:text-blue-700 transition-colors group bg-white hover:bg-blue-50 p-2 rounded-md border border-green-200"
+                          >
+                            <PlayCircle className="w-3 h-3" />
+                            <span className="text-xs font-medium flex-grow text-left">Watch</span>
+                            <ExternalLink className="w-2 h-2 opacity-60 group-hover:opacity-100 transition-opacity" />
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Vatican Card */}
+                      <div className="p-3 bg-purple-50 border border-purple-200 rounded-lg">
+                        <div className="flex items-center gap-2 mb-2">
+                          <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+                          <h4 className="font-semibold text-purple-900 text-xs">🇻🇦 Vatican</h4>
+                        </div>
+                        
+                        <div className="space-y-2">
+                          <div className="flex items-center gap-1 text-xs text-purple-700">
+                            <Calendar className="w-3 h-3" />
+                            <span className="text-xs">Jun 1, 2025</span>
+                            <span className="ml-1 px-1.5 py-0.5 bg-orange-100 text-orange-600 text-xs rounded-full font-medium">Planned</span>
+                          </div>
+                          
+                          <div className="w-full flex items-center gap-1 text-gray-400 bg-gray-50 p-2 rounded-md border border-purple-200">
+                            <PlayCircle className="w-3 h-3" />
+                            <span className="text-xs font-medium flex-grow text-left">Stream Coming Soon</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* San Marino Card - spans both columns */}
+                      <div className="col-span-2 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                        <div className="flex items-center gap-2 mb-2">
+                          <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                          <h4 className="font-semibold text-blue-900 text-xs">🇸🇲 San Marino</h4>
+                        </div>
+                        
+                        <div className="space-y-2">
+                          <div className="flex items-center gap-1 text-xs text-blue-700">
+                            <Calendar className="w-3 h-3" />
+                            <span className="text-xs">Jun 15, 2025</span>
+                            <span className="ml-1 px-1.5 py-0.5 bg-orange-100 text-orange-600 text-xs rounded-full font-medium">Planned</span>
+                          </div>
+                          
+                          <div className="w-full flex items-center gap-1 text-gray-400 bg-gray-50 p-2 rounded-md border border-blue-200">
+                            <PlayCircle className="w-3 h-3" />
+                            <span className="text-xs font-medium flex-grow text-left">Stream Coming Soon</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Geographic Note for Italy */}
+                    <div className="p-3 bg-amber-50 border border-amber-200 rounded-lg">
+                      <div className="flex items-start gap-2">
+                        <div className="w-1 h-1 bg-amber-500 rounded-full mt-2 flex-shrink-0"></div>
+                        <div className="text-xs text-amber-700 leading-relaxed">
+                          <p className="font-medium mb-1">🗺️ Geographic Note</p>
+                          <p>
+                            Vatican and San Marino appear as part of Italy on this map due to their small size in the World Atlas data structure. 
+                            <strong> All three regions are tracked separately</strong> with their own visit dates and videos above.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Special Spain + Andorra Section */}
+                {data.country.id === 'ES' && (
+                  <div className="mt-4 space-y-3">
+                    {/* Spain and Andorra Cards - Horizontal Layout */}
+                    <div className="grid grid-cols-2 gap-3">
+                      {/* Spain Card */}
+                      <div className="p-3 bg-green-50 border border-green-200 rounded-lg">
+                        <div className="flex items-center gap-2 mb-2">
+                          <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                          <h4 className="font-semibold text-green-900 text-xs">🇪🇸 Spain</h4>
+                        </div>
+                        
+                        <div className="space-y-2">
+                          <div className="flex items-center gap-1 text-xs text-green-700">
+                            <Calendar className="w-3 h-3" />
+                            <span className="text-xs">
+                              {new Date(data.country.visitDate + 'T12:00:00').toLocaleDateString('en-US', {
+                                month: 'short',
+                                day: 'numeric',
+                                year: 'numeric'
+                              })}
+                            </span>
+                          </div>
+                          
+                          <button 
+                            onClick={(e) => handleVideoClick(e, getVideoUrls(data.country)[0])}
+                            className="w-full flex items-center gap-1 text-blue-600 hover:text-blue-700 transition-colors group bg-white hover:bg-blue-50 p-2 rounded-md border border-green-200"
+                          >
+                            <PlayCircle className="w-3 h-3" />
+                            <span className="text-xs font-medium flex-grow text-left">Watch</span>
+                            <ExternalLink className="w-2 h-2 opacity-60 group-hover:opacity-100 transition-opacity" />
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Andorra Card */}
+                      <div className="p-3 bg-orange-50 border border-orange-200 rounded-lg">
+                        <div className="flex items-center gap-2 mb-2">
+                          <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
+                          <h4 className="font-semibold text-orange-900 text-xs">🇦🇩 Andorra</h4>
+                        </div>
+                        
+                        <div className="space-y-2">
+                          <div className="flex items-center gap-1 text-xs text-orange-700">
+                            <Calendar className="w-3 h-3" />
+                            <span className="text-xs">Jul 1, 2025</span>
+                            <span className="ml-1 px-1.5 py-0.5 bg-orange-100 text-orange-600 text-xs rounded-full font-medium">Planned</span>
+                          </div>
+                          
+                          <div className="w-full flex items-center gap-1 text-gray-400 bg-gray-50 p-2 rounded-md border border-orange-200">
+                            <PlayCircle className="w-3 h-3" />
+                            <span className="text-xs font-medium flex-grow text-left">Stream Coming Soon</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Geographic Note for Spain */}
+                    <div className="p-3 bg-amber-50 border border-amber-200 rounded-lg">
+                      <div className="flex items-start gap-2">
+                        <div className="w-1 h-1 bg-amber-500 rounded-full mt-2 flex-shrink-0"></div>
+                        <div className="text-xs text-amber-700 leading-relaxed">
+                          <p className="font-medium mb-1">🗺️ Geographic Note</p>
+                          <p>
+                            Andorra appears as part of Spain on this map due to its small size in the World Atlas data structure. 
+                            <strong> Both regions are tracked separately</strong> with their own visit dates and videos above.
                           </p>
                         </div>
                       </div>
