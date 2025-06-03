@@ -73,6 +73,7 @@ const countryNameMap: { [key: string]: string } = {
   "Andorra": "AD",
   "Bosnia and Herzegovina": "BA",
   "Bosnia & Herzegovina": "BA",
+  "Bosnia and Herz.": "BA",
   "Belarus": "BY",
   "Cyprus": "CY",
   "Estonia": "EE",
