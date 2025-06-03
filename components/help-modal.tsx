@@ -75,11 +75,23 @@ export function HelpModal({ isOpen, onClose }: HelpModalProps) {
               <div className="space-y-2 text-sm">
                 <div className="flex items-center gap-2">
                   <div className="w-3 h-3 bg-green-500 rounded-full flex-shrink-0"></div>
-                  <span><strong>🇪🇸 Spain:</strong> Visited + 🇦🇩 Andorra (planned)</span>
+                  <span><strong>🇪🇸 Spain:</strong> Visited + 🇦🇩 Andorra & 🇬🇮 Gibraltar (planned)</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <div className="w-3 h-3 bg-green-500 rounded-full flex-shrink-0"></div>
                   <span><strong>🇮🇹 Italy:</strong> Visited + 🇻🇦 Vatican & 🇸🇲 San Marino (planned)</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 bg-green-500 rounded-full flex-shrink-0"></div>
+                  <span><strong>🇫🇷 France:</strong> Visited + 🇲🇨 Monaco (planned)</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 bg-green-500 rounded-full flex-shrink-0"></div>
+                  <span><strong>🇩🇪 Germany:</strong> Visited + 🇱🇮 Liechtenstein (planned)</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 bg-green-500 rounded-full flex-shrink-0"></div>
+                  <span><strong>🇬🇧 United Kingdom:</strong> Visited + 🇫🇴 Faroe Islands (planned)</span>
                 </div>
               </div>
               <p className="text-xs text-gray-600 mt-2">

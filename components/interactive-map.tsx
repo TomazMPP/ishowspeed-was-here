@@ -72,11 +72,13 @@ const countryNameMap: { [key: string]: string } = {
   "Mongolia": "MN",
   "Andorra": "AD",
   "Bosnia and Herzegovina": "BA",
+  "Bosnia & Herzegovina": "BA",
   "Belarus": "BY",
   "Cyprus": "CY",
   "Estonia": "EE",
   "Finland": "FI",
   "Faroe Islands": "FO",
+  "Faeroe Islands": "FO",
   "Gibraltar": "GI",
   "Croatia": "HR",
   "Iceland": "IS",
@@ -86,15 +88,20 @@ const countryNameMap: { [key: string]: string } = {
   "Latvia": "LV",
   "Monaco": "MC",
   "Moldova": "MD",
+  "Republic of Moldova": "MD",
   "North Macedonia": "MK",
+  "Macedonia": "MK",
+  "Former Yugoslav Republic of Macedonia": "MK",
   "Malta": "MT",
   "Montenegro": "ME",
   "Russia": "RU",
+  "Russian Federation": "RU",
   "Serbia": "RS",
   "Slovakia": "SK",
   "Slovenia": "SI",
   "Ukraine": "UA",
   "Vatican City": "VA",
+  "Vatican": "VA",
   "San Marino": "SM"
 };
 
@@ -224,8 +231,21 @@ export function InteractiveMap() {
              (countryData['SM']?.confirmedVisit && !countryData['SM']?.visited);
     }
     if (alpha2Code === 'ES') {
-      // Check if Andorra is planned
-      return countryData['AD']?.confirmedVisit && !countryData['AD']?.visited;
+      // Check if Andorra or Gibraltar are planned
+      return (countryData['AD']?.confirmedVisit && !countryData['AD']?.visited) ||
+             (countryData['GI']?.confirmedVisit && !countryData['GI']?.visited);
+    }
+    if (alpha2Code === 'FR') {
+      // Check if Monaco is planned
+      return countryData['MC']?.confirmedVisit && !countryData['MC']?.visited;
+    }
+    if (alpha2Code === 'DE') {
+      // Check if Liechtenstein is planned
+      return countryData['LI']?.confirmedVisit && !countryData['LI']?.visited;
+    }
+    if (alpha2Code === 'GB') {
+      // Check if Faroe Islands are planned
+      return countryData['FO']?.confirmedVisit && !countryData['FO']?.visited;
     }
     return false;
   }
