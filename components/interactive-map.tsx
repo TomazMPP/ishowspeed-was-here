@@ -81,19 +81,19 @@ export function InteractiveMap() {
 
   const visitedCount = Object.values(countryData).filter(country => country.visited).length;
   const visited2022Count = Object.values(countryData).filter(country => {
-    const date = getLatestVisitDate(country) || getFirstVisitDate(country);
+    const date = getFirstVisitDate(country);
     return date?.includes('2022');
   }).length;
   const visited2023Count = Object.values(countryData).filter(country => {
-    const date = getLatestVisitDate(country) || getFirstVisitDate(country);
+    const date = getFirstVisitDate(country);
     return date?.includes('2023');
   }).length;
   const visited2024Count = Object.values(countryData).filter(country => {
-    const date = getLatestVisitDate(country) || getFirstVisitDate(country);
+    const date = getFirstVisitDate(country);
     return date?.includes('2024');
   }).length;
   const visited2025Count = Object.values(countryData).filter(country => {
-    const date = getLatestVisitDate(country) || getFirstVisitDate(country);
+    const date = getFirstVisitDate(country);
     return date?.includes('2025');
   }).length;
 
@@ -135,7 +135,8 @@ export function InteractiveMap() {
   const getChronologicalColor = (country: CountryData | undefined) => {
     if (!country?.visited) return '#e5e7eb'; 
     
-    const date = getLatestVisitDate(country) || getFirstVisitDate(country);
+    // Always use the first visit date for chronological coloring
+    const date = getFirstVisitDate(country);
     if (!date) return '#e5e7eb';
     
     const year = getYearFromDate(date);
