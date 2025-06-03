@@ -250,7 +250,7 @@ export function InteractiveMap() {
     return false;
   }
 
-  const getStrokeStyle = (countryData: CountryData | undefined, alpha2Code: string) => {
+  const getStrokeStyle = () => {
     // Default stroke for all countries
     return {
       strokeWidth: 0.5,
@@ -397,22 +397,22 @@ export function InteractiveMap() {
                         fill: getCountryColor(country, alpha2Code),
                         outline: 'none',
                         transition: 'all 0.3s',
-                        strokeWidth: getStrokeStyle(country, alpha2Code).strokeWidth,
-                        stroke: getStrokeStyle(country, alpha2Code).stroke
+                        strokeWidth: getStrokeStyle().strokeWidth,
+                        stroke: getStrokeStyle().stroke
                       },
                       hover: {
                         fill: getHoverColor(country, alpha2Code),
                         outline: 'none',
                         cursor: isInteractive ? 'pointer' : 'default',
                         transition: 'all 0.3s',
-                        strokeWidth: getStrokeStyle(country, alpha2Code).strokeWidth,
-                        stroke: getStrokeStyle(country, alpha2Code).stroke
+                        strokeWidth: getStrokeStyle().strokeWidth,
+                        stroke: getStrokeStyle().stroke
                       },
                       pressed: {
                         fill: getPressedColor(country, alpha2Code),
                         outline: 'none',
-                        strokeWidth: getStrokeStyle(country, alpha2Code).strokeWidth,
-                        stroke: getStrokeStyle(country, alpha2Code).stroke
+                        strokeWidth: getStrokeStyle().strokeWidth,
+                        stroke: getStrokeStyle().stroke
                       },
                     }}
                   />
