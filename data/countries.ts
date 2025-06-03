@@ -420,5 +420,186 @@ export const countryData: Record<string, CountryData> = {
     videoUrl: "https://www.youtube.com/watch?v=0mwuGExoxFU",
     visitDate: "2025-04-11"
   },
-  
+  VA: {
+    id: "VA",
+    name: "Vatican",
+    visited: false,
+    confirmedVisit: true,
+    visitDate: "2025-06-01"
+  },
+  SM: {
+    id: "SM",
+    name: "San Marino",
+    visited: false,
+    confirmedVisit: true,
+    visitDate: "2025-06-15"
+  },
+  AD: {
+    id: "AD",
+    name: "Andorra",
+    visited: false,
+    confirmedVisit: true,
+    visitDate: "2025-07-01"
+  },
+  BA: {
+    id: "BA",
+    name: "Bosnia and Herzegovina",
+    visited: false,
+    confirmedVisit: true,
+    visitDate: "2025-07-05"
+  },
+  BY: {
+    id: "BY",
+    name: "Belarus",
+    visited: false,
+    confirmedVisit: true,
+    visitDate: "2025-07-10"
+  },
+  CY: {
+    id: "CY",
+    name: "Cyprus",
+    visited: false,
+    confirmedVisit: true,
+    visitDate: "2025-07-15"
+  },
+  EE: {
+    id: "EE",
+    name: "Estonia",
+    visited: false,
+    confirmedVisit: true,
+    visitDate: "2025-07-20"
+  },
+  FI: {
+    id: "FI",
+    name: "Finland",
+    visited: false,
+    confirmedVisit: true,
+    visitDate: "2025-07-25"
+  },
+  FO: {
+    id: "FO",
+    name: "Faroe Islands",
+    visited: false,
+    confirmedVisit: true,
+    visitDate: "2025-08-01"
+  },
+  GI: {
+    id: "GI",
+    name: "Gibraltar",
+    visited: false,
+    confirmedVisit: true,
+    visitDate: "2025-08-05"
+  },
+  HR: {
+    id: "HR",
+    name: "Croatia",
+    visited: false,
+    confirmedVisit: true,
+    visitDate: "2025-08-10"
+  },
+  IS: {
+    id: "IS",
+    name: "Iceland",
+    visited: false,
+    confirmedVisit: true,
+    visitDate: "2025-08-15"
+  },
+  LI: {
+    id: "LI",
+    name: "Liechtenstein",
+    visited: false,
+    confirmedVisit: true,
+    visitDate: "2025-08-20"
+  },
+  LT: {
+    id: "LT",
+    name: "Lithuania",
+    visited: false,
+    confirmedVisit: true,
+    visitDate: "2025-08-25"
+  },
+  LU: {
+    id: "LU",
+    name: "Luxembourg",
+    visited: false,
+    confirmedVisit: true,
+    visitDate: "2025-09-01"
+  },
+  LV: {
+    id: "LV",
+    name: "Latvia",
+    visited: false,
+    confirmedVisit: true,
+    visitDate: "2025-09-05"
+  },
+  MC: {
+    id: "MC",
+    name: "Monaco",
+    visited: false,
+    confirmedVisit: true,
+    visitDate: "2025-09-10"
+  },
+  MD: {
+    id: "MD",
+    name: "Moldova",
+    visited: false,
+    confirmedVisit: true,
+    visitDate: "2025-09-15"
+  },
+  MK: {
+    id: "MK",
+    name: "North Macedonia",
+    visited: false,
+    confirmedVisit: true,
+    visitDate: "2025-09-20"
+  },
+  MT: {
+    id: "MT",
+    name: "Malta",
+    visited: false,
+    confirmedVisit: true,
+    visitDate: "2025-09-25"
+  },
+  ME: {
+    id: "ME",
+    name: "Montenegro",
+    visited: false,
+    confirmedVisit: true,
+    visitDate: "2025-10-01"
+  },
+  RU: {
+    id: "RU",
+    name: "Russia",
+    visited: false,
+    confirmedVisit: true,
+    visitDate: "2025-10-05"
+  },
+  RS: {
+    id: "RS",
+    name: "Serbia",
+    visited: false,
+    confirmedVisit: true,
+    visitDate: "2025-10-10"
+  },
+  SK: {
+    id: "SK",
+    name: "Slovakia",
+    visited: false,
+    confirmedVisit: true,
+    visitDate: "2025-10-15"
+  },
+  SI: {
+    id: "SI",
+    name: "Slovenia",
+    visited: false,
+    confirmedVisit: true,
+    visitDate: "2025-10-20"
+  },
+  UA: {
+    id: "UA",
+    name: "Ukraine",
+    visited: false,
+    confirmedVisit: true,
+    visitDate: "2025-10-25"
+  },
 };
