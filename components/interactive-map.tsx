@@ -8,7 +8,7 @@ import { StatsOverlay } from './stats-overlay'
 import { HelpButton } from './help-button'
 import type { CountryData, TooltipData, ViewMode } from '../types/map-types'
 import { ViewModeToggle } from './view-toggle'
-import { getLatestVisitDate, getFirstVisitDate, getVisitCount, hasMultipleVisits } from '@/lib/country-utils'
+import { getFirstVisitDate, getVisitCount, hasMultipleVisits } from '@/lib/country-utils'
 
 
 const geoUrl = "https://unpkg.com/world-atlas@2/countries-110m.json"
