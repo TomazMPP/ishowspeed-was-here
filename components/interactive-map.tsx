@@ -30,6 +30,7 @@ const countryNameMap: { [key: string]: string } = {
   "Panama": "PA",
   "Argentina": "AR",
   "Czech Republic": "CZ",
+  "Czechia": "CZ",
   "Albania": "AL",
   "Germany": "DE",
   "France": "FR",
